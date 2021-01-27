@@ -1,0 +1,21 @@
+version: '3'
+services:
+  vat_tf:
+    image: ${IMAGE_NAME}
+    volumes:
+     - ./../../:/workspace
+     - /home/${USER}/cache:/cache
+     - /home/${USER}/.pycharm_helpers:/home/${USER}/.pycharm_helpers
+     - /home/${USER}/.cache:/home/${USER}/.cache
+     - /etc/sudoers:/etc/sudoers:ro       # inherit sudoers settings from hosts
+     - /etc/passwd:/etc/passwd:ro         # inherit passwd from host
+     - /etc/group:/etc/group:ro           # inherit group from host
+     - /etc/shadow:/etc/shadow:ro         # inherit shadow from host
+    environment:
+    - PYTHONPATH=/workspace/lipschitz
+    - HOST_USER=${USER}                   # Used in entry.sh
+    ipc: host
+
+    container_name: lipschitz
+    hostname: lipschitz
+    working_dir: /workspace
