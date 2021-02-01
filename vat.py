@@ -10,6 +10,8 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_float('epsilon', 8.0, "norm length for (virtual) adversarial training ")
 tf.app.flags.DEFINE_integer('num_power_iterations', 1, "the number of power iterations")
 tf.app.flags.DEFINE_float('xi', 1e-6, "small constant for finite difference")
+tf.app.flags.DEFINE_float('xi_eq_eps', 0, "{1, 0} if 1 x will be equal with epsilon")
+tf.app.flags.DEFINE_float('xi_stddev', 1, "variance of xi")
 
 
 def logit(x, is_training=True, update_batch_stats=True, stochastic=True, seed=1234):
@@ -38,7 +40,11 @@ def get_normalized_vector(d):
 
 def generate_virtual_adversarial_perturbation(x, logit, is_training=True):
     d = tf.random_normal(shape=tf.shape(x))
-
+    if FLAGS.xi_stddev == 0:
+        xi = FLAGS.xi
+    else:
+        xi = tf.clip_by_value(tf.abs(tf.random_normal(shape=x.shape[0:1], mean=0, stddev=FLAGS.xi_stddev)),
+                              clip_value_min=FLAGS.xi, clip_value_max=10)
     for _ in range(FLAGS.num_power_iterations):
         d = FLAGS.xi * get_normalized_vector(d)
         logit_p = logit
