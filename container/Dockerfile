@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.1.0-py3
+FROM tensorflow/tensorflow:1.1.0-gpu
 
 # Install some basic apt packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && \

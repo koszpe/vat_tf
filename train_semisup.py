@@ -1,3 +1,4 @@
+import os
 import time
 
 import numpy
@@ -92,7 +93,11 @@ def build_eval_graph(x, y, ul_x):
 
 
 def main(_):
-    print(FLAGS.epsilon, FLAGS.top_bn)
+    if FLAGS.xi_eq_eps:
+        FLAGS.xi = FLAGS.epsilon
+    print("epsilon: " + str(FLAGS.epsilon))
+    print("xi: " + str(FLAGS.xi))
+    print("xi_stddev: " + str(FLAGS.xi_stddev))
     numpy.random.seed(seed=FLAGS.seed)
     tf.set_random_seed(numpy.random.randint(1234))
     with tf.Graph().as_default() as g:

@@ -16,6 +16,6 @@ services:
     - HOST_USER=${USER}                   # Used in entry.sh
     ipc: host
 
-    container_name: lipschitz
-    hostname: lipschitz
+    container_name: vat_tf
+    hostname: vat_tf
     working_dir: /workspace
